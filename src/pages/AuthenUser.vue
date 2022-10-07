@@ -2,9 +2,9 @@
   <div>
     <v-row justify="center">
       <form @submit.prevent="submitLogin">
-        <v-card class="w-500">
+        <v-card class="w-500" elevation="8">
           <v-card-title>
-            <span class="text-h4 align-center">Login</span>
+            <span class="text-h3 align-center mt-5">Login</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -118,7 +118,7 @@ export default {
         this.loading = false;
       } catch (err) {
         this.loading = false;
-        this.errorMsg = err.response.data.name;
+        this.errorMsg = "Username or Password invalid";
         this.snackErr = true;
         console.log(err);
       }

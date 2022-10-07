@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex justify-center align-center">
+    <div class="d-flex justify-center align-center mt-4">
       <h1>Pet Manager</h1>
     </div>
 
@@ -193,6 +193,7 @@
                 :petType="pet.petType"
               ></pet-lists>
             </tbody>
+            <!-- Filter Pet -->
             <tbody v-else-if="filterType">
               <pet-lists
                 v-for="(pet, index) in filter"
@@ -278,8 +279,6 @@ export default {
             window.location.reload();
           }, 2000);
         }
-        this.petName.value = "";
-        this.petType.value = "";
       } catch (err) {
         console.log(err);
         this.snackMsg = err.response.data.message;

@@ -4,7 +4,9 @@
       <h4>{{ index + 1 }}</h4>
     </td>
     <td>
-      <h4>{{ petName ? petName : "no data" }}</h4>
+      <h4 class="text-truncate" style="max-width: 150px">
+        {{ petName ? petName : "no data" }}
+      </h4>
     </td>
     <td>
       <h4>{{ petType ? petType : "no data" }}</h4>
@@ -65,13 +67,19 @@
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
-
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="editDialog = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text type="submit"> Save </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            type="submit"
+            :disabled="newPetType.value === ''"
+          >
+            Save
+          </v-btn>
         </v-card-actions>
       </v-card>
     </form>
@@ -103,8 +111,10 @@
       </v-card-title>
       <v-card-text>
         <p>
-          Are you to delete user "{{ petName }}", if don't sure to delete you
-          can choose Close
+          Are you to delete user
+          <span class="text-truncate" style="max-width: 150px"
+            >"{{ petName }}"</span
+          >, if don't sure to delete you can choose Close
         </p>
       </v-card-text>
       <v-card-actions>
@@ -144,27 +154,14 @@ export default {
     };
   },
   methods: {
-    formValidation() {
-      this.formIsValidate = true;
-
-      if (this.newPetType.value === "") {
-        this.newPetType.isValid = false;
-        this.formIsValidate = false;
-      }
-    },
     async submitForm() {
       try {
-        this.formValidation();
-        if (!this.formIsValidate) {
-          return;
-        }
         this.spinner = true;
         const res = await axios.put("http://localhost:8000/pets/" + this.id, {
           petType: this.newPetType.value,
         });
         if (res) {
           this.status = "success";
-          this.newPetType.value = "";
           this.editDialog = false;
           this.snackMsg = "Pet Edited";
           this.snackEdit = true;

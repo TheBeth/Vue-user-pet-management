@@ -3,8 +3,7 @@
     <v-row class="d-flex" justify="center">
       <v-card :elevation="12" outlined class="pa-5 mt-5 mx-3" width="40vw">
         <div>
-          <h3>User Detail</h3>
-          <p>Username : {{ userName }}</p>
+          <h3>{{ userName }} Detail</h3>
           <p>Firstname : {{ firstName ? firstName : "no data" }}</p>
           <p>Lastname : {{ lastName ? lastName : "no data" }}</p>
           <p>Age : {{ age ? age : "no data" }}</p>
@@ -153,14 +152,12 @@
                   <v-text-field
                     label="First Name*"
                     v-model="newFirst"
-                    :rules="firstNameRules"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     label="Last Name*"
                     v-model="newLast"
-                    :rules="lastNameRules"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -168,7 +165,6 @@
                     label="Age"
                     v-model.number="newAge"
                     type="number"
-                    required
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -184,7 +180,14 @@
             <v-btn color="blue darken-1" text @click="editDialog = false">
               Close
             </v-btn>
-            <v-btn color="blue darken-1" text type="submit"> Save </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              type="submit"
+              :disabled="newFirst == '' && newLast == '' && newAge == ''"
+            >
+              Save
+            </v-btn>
           </v-card-actions>
         </v-card>
       </form>
@@ -331,6 +334,7 @@ export default {
     async submitForm() {
       try {
         this.spinner = true;
+
         const formData = {
           firstName: this.newFirst,
           lastName: this.newLast,
@@ -341,10 +345,9 @@ export default {
           formData
         );
         if (res) {
+          console.log(res);
+          console.log(formData);
           this.status = "success";
-          this.newFirst = "";
-          this.newLast = "";
-          this.newAge = "";
           this.snackMsg = "User Edited";
           this.editDialog = false;
           this.snackEdit = true;
@@ -370,6 +373,7 @@ export default {
         const formSubmit = {
           petId: this.newPet.value,
         };
+
         const res = await axios.put(
           "http://localhost:8000/users/addPet/" + this.id,
           formSubmit
@@ -379,16 +383,16 @@ export default {
           this.snackMsg = "Pet Added";
           this.snackEdit = true;
           this.addPetDialog = false;
-          this.newPet.value = "";
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
         }
       } catch (err) {
         console.log(err);
         this.snackMsg = err.response;
         this.snackEdit = true;
       } finally {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        console.log("...");
       }
     },
     async submitDeleteUser() {
@@ -446,5 +450,11 @@ ul {
 .center {
   display: flex;
   margin-top: 5px;
+}
+.basic {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td>{{ index + 1 }}</td>
-    <td>{{ petName }}</td>
+    <td class="text-truncate" style="max-width: 130px">{{ petName }}</td>
     <td>{{ petType }}</td>
     <td>
       <v-btn
