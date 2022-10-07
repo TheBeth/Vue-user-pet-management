@@ -1,4 +1,4 @@
-# learinng-track
+# Learninng-Track-Vue user pet manager
 
 ## Project setup
 ```
