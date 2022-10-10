@@ -194,6 +194,11 @@
     </v-dialog>
   </v-row>
 
+  <v-row justify="center" v-if="spinner">
+    <v-dialog v-model="addPetDialog">
+      <base-loading></base-loading>
+    </v-dialog>
+  </v-row>
   <v-row justify="center">
     <v-dialog v-model="addPetDialog" persistent max-width="600px">
       <form @submit.prevent="submitAddPet">
@@ -366,6 +371,7 @@ export default {
     },
     async submitAddPet() {
       try {
+        this.spinner = true;
         this.formValidation();
         if (!this.formIsValid) {
           return;
@@ -379,6 +385,7 @@ export default {
           formSubmit
         );
         if (res) {
+          this.spinner = false;
           this.status = "success";
           this.snackMsg = "Pet Added";
           this.snackEdit = true;
