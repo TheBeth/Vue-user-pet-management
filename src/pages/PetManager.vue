@@ -269,7 +269,11 @@ export default {
           petName: this.petName.value,
           petType: this.petType.value,
         };
-        const res = await axios.post("http://localhost:8000/pets", formData);
+        const res = await axios.post("http://localhost:8000/pets", formData, {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.token}`,
+          },
+        });
         if (res) {
           this.dialog = false;
           this.snackMsg = "Pet Created";
@@ -289,7 +293,11 @@ export default {
     },
     async fetchData() {
       this.spinner = true;
-      const res = await axios.get("http://localhost:8000/pets");
+      const res = await axios.get("http://localhost:8000/pets", {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.token}`,
+        },
+      });
       const resData = res.data.Items;
       for (let i in resData) {
         let pet = {

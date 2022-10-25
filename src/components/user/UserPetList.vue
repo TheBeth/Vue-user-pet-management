@@ -10,8 +10,7 @@
         icon="mdi-delete"
         @click="deletePet = true"
         :dialog="deletePet"
-        >Del</v-btn
-      >
+      ></v-btn>
     </td>
   </tr>
 
@@ -83,7 +82,12 @@ export default {
         this.spinner = true;
         const res = await axios.put(
           "http://localhost:8000/users/deletePet/" + this.userId,
-          { petId: this.id }
+          { petId: this.id },
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.token}`,
+            },
+          }
         );
         if (res) {
           this.snackMsg = "Pet Removed";

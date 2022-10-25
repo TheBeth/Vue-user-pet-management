@@ -1,5 +1,4 @@
 <template>
-  <!-- <button @click="showUser">hello</button> -->
   <v-app>
     <v-main>
       <nav-header></nav-header>
@@ -14,8 +13,6 @@
 
 <script>
 import NavHeader from "./components/NavHeader.vue";
-
-// import axios from "axios";
 
 export default {
   components: { NavHeader },

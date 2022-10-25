@@ -157,9 +157,17 @@ export default {
     async submitForm() {
       try {
         this.spinner = true;
-        const res = await axios.put("http://localhost:8000/pets/" + this.id, {
-          petType: this.newPetType.value,
-        });
+        const res = await axios.put(
+          "http://localhost:8000/pets/" + this.id,
+          {
+            petType: this.newPetType.value,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.token}`,
+            },
+          }
+        );
         if (res) {
           this.status = "success";
           this.editDialog = false;
@@ -180,7 +188,14 @@ export default {
     async submitDelete() {
       try {
         this.spinner = true;
-        const res = await axios.delete("http://localhost:8000/pets/" + this.id);
+        const res = await axios.delete(
+          "http://localhost:8000/pets/" + this.id,
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.token}`,
+            },
+          }
+        );
         if (res) {
           this.status = "error";
           this.snackMsg = "Pet Deleted";

@@ -106,14 +106,16 @@
     ></user-lists>
     <v-spacer></v-spacer>
 
-    <v-col cols="12" sm="12" class="text-right">
-      <v-btn
-        large
-        color="orange darken-2"
-        icon="mdi-arrow-up"
-        @click="scrollToTop"
-      ></v-btn>
-    </v-col>
+    <div class="fixed">
+      <v-col cols="12" sm="12" class="text-right">
+        <v-btn
+          large
+          color="orange darken-2"
+          icon="mdi-arrow-up"
+          @click="scrollToTop"
+        ></v-btn>
+      </v-col>
+    </div>
   </div>
 </template>
 
@@ -185,7 +187,11 @@ export default {
           userName: this.userName.value,
           age: this.age.value,
         };
-        const res = await axios.post("http://localhost:8000/users", formData);
+        const res = await axios.post("http://localhost:8000/users", formData, {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.token}`,
+          },
+        });
         if (res) {
           this.snackNewUser = true;
           this.snackMsg = "User Created";
@@ -204,7 +210,11 @@ export default {
     async fetchData() {
       this.spinner = true;
       try {
-        const res = await axios.get("http://localhost:8000/users");
+        const res = await axios.get("http://localhost:8000/users", {
+          headers: {
+            Authorization: `Bearer ${window.localStorage.token}`,
+          },
+        });
         const resData = res.data.Items;
         for (let i in resData) {
           let user = {
@@ -228,7 +238,11 @@ export default {
       }
     },
     scrollToTop() {
-      window.scrollTo(0, 0);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
     },
   },
 };
@@ -245,5 +259,10 @@ h1 {
 
 .w-500 {
   width: 500px;
+}
+.fixed {
+  position: fixed;
+  bottom: 0%;
+  right: 0%;
 }
 </style>

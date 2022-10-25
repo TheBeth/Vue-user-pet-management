@@ -12,7 +12,9 @@
             <v-col cols="12">
               <v-expansion-panels class="mt-4">
                 <v-expansion-panel bg-color="#f0f0f0">
-                  <v-expansion-panel-title>Pet List </v-expansion-panel-title>
+                  <v-expansion-panel-title class="text-button"
+                    >Pet List
+                  </v-expansion-panel-title>
                   <v-expansion-panel-text>
                     <v-table v-if="havePet.length > 0">
                       <thead>
@@ -62,8 +64,7 @@
             dark
             @click="editDialog = true"
             :dialog="editDialog"
-          >
-            Edit
+            >Edit
           </v-btn>
           <v-btn
             color="red lighten-3"
@@ -72,8 +73,7 @@
             dark
             @click="deleteDialog = true"
             :dialog="deleteDialog"
-          >
-            Delete
+            >Delete
           </v-btn>
         </div>
       </v-card>
@@ -287,7 +287,12 @@ export default {
       this.spinner = true;
       try {
         const res = await axios.get(
-          "http://localhost:8000/users/getPet/" + this.id
+          "http://localhost:8000/users/getPet/" + this.id,
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.token}`,
+            },
+          }
         );
 
         const resData = res.data.Pets;
@@ -315,7 +320,12 @@ export default {
     async petNotOwn() {
       try {
         const res = await axios.get(
-          "http://localhost:8000/users/notOwn/" + this.id
+          "http://localhost:8000/users/notOwn/" + this.id,
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.token}`,
+            },
+          }
         );
         const resData = res.data.NotOwn;
         return (this.notOwn = resData);
@@ -347,7 +357,12 @@ export default {
         };
         const res = await axios.put(
           "http://localhost:8000/users/" + this.id,
-          formData
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.token}`,
+            },
+          }
         );
         if (res) {
           console.log(res);
@@ -382,7 +397,12 @@ export default {
 
         const res = await axios.put(
           "http://localhost:8000/users/addPet/" + this.id,
-          formSubmit
+          formSubmit,
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.token}`,
+            },
+          }
         );
         if (res) {
           this.spinner = false;
@@ -406,7 +426,12 @@ export default {
       try {
         this.spinner = true;
         const res = await axios.delete(
-          "http://localhost:8000/users/" + this.id
+          "http://localhost:8000/users/" + this.id,
+          {
+            headers: {
+              Authorization: `Bearer ${window.localStorage.token}`,
+            },
+          }
         );
         if (res) {
           this.status = "error";
@@ -457,6 +482,7 @@ ul {
 .center {
   display: flex;
   margin-top: 5px;
+  float: right;
 }
 .basic {
   width: 200px;

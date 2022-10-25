@@ -85,35 +85,6 @@ export default {
             window.location.reload();
           }, 1000);
         }
-
-        // const user = new CognitoUser({
-        //   Username: this.userName,
-        //   Pool: UserPool,
-        // });
-        // const AuthDetail = new AuthenticationDetails({
-        //   Username: this.userName,
-        //   Password: this.password,
-        // });
-        // user.authenticateUser(AuthDetail, {
-        //   onSuccess(data) {
-        //     console.log("Success ", data);
-        //     window.localStorage.setItem("token", data.accessToken.jwtToken);
-        //     console.log(window.localStorage.getItem("token"));
-        //     if (data) {
-        //       setTimeout(() => {
-        //         window.location.reload();
-        //       }, 1500);
-        //     }
-        //   },
-        //   onFailure(data) {
-        //     console.log("Failure", data.message);
-        //     alert(data.message);
-        //     this.errorMsg = data.message;
-        //   },
-        //   newPasswordRequired(data) {
-        //     console.log("New Password Require ", data);
-        //   },
-        // });
         this.$router.push("/user");
         this.loading = false;
       } catch (err) {
