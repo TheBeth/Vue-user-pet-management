@@ -33,6 +33,8 @@ export default {
   methods: {
     signOut() {
       window.localStorage.removeItem("token");
+      window.localStorage.removeItem("idToken");
+      window.localStorage.removeItem("refreshToken");
       this.$router.replace("/signin");
       setTimeout(() => {
         window.location.reload();

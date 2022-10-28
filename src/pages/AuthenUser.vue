@@ -4,7 +4,7 @@
       <form @submit.prevent="submitLogin">
         <v-card class="w-500" elevation="8">
           <v-card-title>
-            <span class="text-h3 align-center mt-5">Login</span>
+            <span class="text-h4 align-center mt-5">Login</span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -55,8 +55,7 @@
 
 <script>
 import axios from "axios";
-// import UserPool from "../middlewares/Userpool.js";
-// import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
+
 export default {
   data() {
     return {
@@ -76,22 +75,33 @@ export default {
           userName: this.userName,
           password: this.password,
         });
-        console.log(res);
         const resData = res.data;
-        console.log(resData);
-        window.localStorage.setItem("token", resData);
-        if (window.localStorage.getItem("token")) {
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+        console.log(res);
+        if (resData.accessToken && resData.refreshToken && resData.idToken) {
+          window.localStorage.setItem("token", resData.accessToken);
+          window.localStorage.setItem("idToken", resData.idToken);
+          window.localStorage.setItem("refreshToken", resData.refreshToken);
+          this.$router.push("/user");
+          if (window.localStorage.getItem("token")) {
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
+          }
         }
-        this.$router.push("/user");
+        if (resData.message === "New password is required") {
+          this.errorMsg = "Reset Password";
+          this.snackErr = true;
+          this.$router.push("/resetPassword");
+        }
         this.loading = false;
       } catch (err) {
         this.loading = false;
-        this.errorMsg = "Username or Password invalid";
         this.snackErr = true;
-        console.log(err);
+        if (err.response.data.name === "NotAuthorizedException") {
+          this.errorMsg = err.response.data.name;
+        } else {
+          this.errorMsg = "Username or Password invalid";
+        }
       }
     },
   },
